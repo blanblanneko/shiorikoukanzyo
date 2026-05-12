@@ -1,0 +1,113 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  max-width: 1000px;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.verticalTitle h1 {
+  font-size: 5rem;
+  letter-spacing: 0.8rem;
+  line-height: 1.1;
+  color: var(--text-color);
+  padding: 0 2rem;
+  height: 450px;
+  border-right: 2px solid var(--accent-color); /* アクセントカラーのライン */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.tagline {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-color);
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+}
+
+.mobileOnly {
+  display: none;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.primaryButton {
+  background: white;
+  color: var(--text-color);
+  padding: 1.2rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 50px; /* 丸みのあるデザイン */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: inline-block;
+  border: 1px solid var(--glass-border);
+}
+
+.primaryButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  background: var(--accent-color);
+  color: white;
+}
+
+.footer {
+  position: absolute;
+  bottom: 2rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column-reverse;
+    gap: 3rem;
+    text-align: center;
+  }
+  
+  .verticalTitle h1 {
+    height: auto;
+    writing-mode: horizontal-tb;
+    border-right: none;
+    border-bottom: 2px solid var(--accent-color);
+    padding: 0 0 1.5rem 0;
+    font-size: 3rem;
+  }
+
+  .tagline {
+    font-size: 1.4rem; /* 2行に収まるサイズ */
+  }
+
+  .mobileOnly {
+    display: block;
+  }
+}

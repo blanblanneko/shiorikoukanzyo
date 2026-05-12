@@ -1,0 +1,321 @@
+.main {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.backLink {
+  align-self: flex-start;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.container {
+  display: flex;
+  gap: 5rem;
+  max-width: 1100px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+/* 栞プレビューの配置 */
+.previewSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 4rem;
+}
+
+/* 栞のデザインを一新 */
+.shiori {
+  background: white;
+  width: 180px;
+  height: 500px;
+  padding: 3rem 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  position: relative;
+  border-radius: 12px; /* 丸みをつける */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.shiori::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  background-color: var(--accent-color); /* アクセントカラーの穴 */
+  border-radius: 50%;
+}
+
+.verticalText {
+  height: 100%;
+  font-size: 1.3rem; /* 少し小さくして収まりを良くする */
+  line-height: 1.6;
+  letter-spacing: 0.1rem;
+  color: var(--text-color);
+  font-weight: 500;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  overflow: hidden; /* 万が一溢れた場合もデザインを崩さない */
+}
+
+.bookMiniInfo {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #888;
+  max-width: 180px;
+}
+
+/* フォームをグラスモーフィズム風に */
+.formSection {
+  flex: 1.5;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--paper-shadow);
+}
+
+.title {
+  margin-bottom: 3rem;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.inputGroup label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.charCount {
+  font-size: 0.8rem;
+  text-align: right;
+  color: #999;
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.2);
+}
+
+.submitButton {
+  margin-top: 1.5rem;
+  background: var(--text-color);
+  color: white;
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 50px;
+  transition: all 0.3s;
+  letter-spacing: 0.2rem;
+}
+
+.submitButton:hover {
+  background: var(--accent-color);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(125, 211, 252, 0.3);
+}
+
+/* 待機・結果 */
+.waitOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.waitMessage {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.flutteringShiori {
+  width: 60px;
+  height: 150px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+  position: relative;
+  animation: flutter 6s infinite ease-in-out;
+}
+
+.flutteringShiori::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+}
+
+@keyframes flutter {
+  0%, 100% {
+    transform: translateY(-20px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  25% {
+    transform: translateY(10px) translateX(20px) rotateX(20deg) rotateY(30deg) rotateZ(5deg);
+  }
+  50% {
+    transform: translateY(0px) translateX(-20px) rotateX(-20deg) rotateY(-30deg) rotateZ(-5deg);
+  }
+  75% {
+    transform: translateY(20px) translateX(10px) rotateX(10deg) rotateY(45deg) rotateZ(2deg);
+  }
+}
+
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  max-width: 800px;
+  animation: slideUp 1s ease-out;
+}
+
+.resultDisplay {
+  display: flex;
+  justify-content: center;
+}
+
+.resultInfo {
+  text-align: center;
+}
+
+.resultHeading {
+  font-size: 1.4rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.resultBookTitle {
+  font-size: 2.5rem;
+  color: var(--text-color);
+}
+
+.resultAuthor {
+  font-size: 1.3rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.resultImpression {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: var(--paper-shadow);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.bookLink {
+  color: var(--accent-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: underline;
+}
+
+.resultActions {
+  margin-top: 3rem;
+}
+
+.primaryButton {
+  background: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 700;
+  box-shadow: var(--paper-shadow);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    flex-direction: column-reverse; /* フォームを上、栞を下に */
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .previewSection {
+    position: relative;
+    top: 0;
+  }
+
+  .shiori {
+    width: 140px;
+    height: 380px;
+    padding: 2rem 1rem;
+  }
+
+  .formSection {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
+
+  .resultBookTitle {
+    font-size: 1.8rem;
+  }
+
+  .resultImpression {
+    padding: 1.5rem;
+  }
+}

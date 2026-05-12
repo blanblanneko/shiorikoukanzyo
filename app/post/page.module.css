@@ -35,12 +35,12 @@
 /* 栞のデザインを一新 */
 .shiori {
   background: white;
-  width: 180px;
-  height: 500px;
-  padding: 3rem 1.5rem;
+  width: 220px; /* 180pxから広げる */
+  height: 520px; /* 少し高さを出す */
+  padding: 3rem 1.2rem;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
   position: relative;
-  border-radius: 12px; /* 丸みをつける */
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -60,15 +60,15 @@
 
 .verticalText {
   height: 100%;
-  font-size: 1.3rem; /* 少し小さくして収まりを良くする */
-  line-height: 1.6;
+  font-size: 1.05rem; /* 1.3remから小さくして、140文字入るようにする */
+  line-height: 1.45;
   letter-spacing: 0.1rem;
   color: var(--text-color);
   font-weight: 500;
   word-break: break-all;
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  overflow: hidden; /* 万が一溢れた場合もデザインを崩さない */
+  overflow: hidden;
 }
 
 .bookMiniInfo {

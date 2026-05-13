@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 
@@ -13,54 +13,6 @@ export default function Post() {
   
   const [status, setStatus] = useState('idle'); // idle, sending, result
   const [receivedBook, setReceivedBook] = useState(null);
-  
-  // 候補表示用のステート
-  const [suggestions, setSuggestions] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  // デバウンス用のタイマー（useRefで確実に管理）
-  const searchTimerRef = useRef(null);
-
-  // 本を検索する関数（より慎重なデバウンス）
-  const searchBooks = (query) => {
-    if (query.length < 2) {
-      setSuggestions([]);
-      return;
-    }
-
-    // 前のタイマーがあれば確実にキャンセル
-    if (searchTimerRef.current) {
-      clearTimeout(searchTimerRef.current);
-    }
-
-    // 800ms（0.8秒）後に検索を実行
-    searchTimerRef.current = setTimeout(async () => {
-      setIsSearching(true);
-      try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-        const data = await res.json();
-        if (data.items) {
-          const books = data.items.map(item => ({
-            title: item.volumeInfo.title,
-            author: item.volumeInfo.authors ? item.volumeInfo.authors[0] : '不明',
-            amazonUrl: `https://www.amazon.co.jp/s?k=${encodeURIComponent(item.volumeInfo.title + ' ' + (item.volumeInfo.authors ? item.volumeInfo.authors[0] : ''))}`
-          }));
-          setSuggestions(books);
-        }
-      } catch (err) {
-        console.error('Search failed:', err);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 800);
-  };
-
-  // 候補を選択した時の処理
-  const selectSuggestion = (book) => {
-    setBookTitle(book.title);
-    setAuthor(book.author);
-    setUrl(book.amazonUrl);
-    setSuggestions([]);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,62 +59,31 @@ export default function Post() {
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.inputGroup}>
                 <label>本のタイトル</label>
-                <div className={styles.suggestWrapper}>
-                  <input 
-                    type="text" 
-                    placeholder="例：走れメロス" 
-                    value={bookTitle} 
-                    onChange={(e) => {
-                      setBookTitle(e.target.value);
-                      searchBooks(e.target.value);
-                    }} 
-                    required 
-                  />
-                  {suggestions.length > 0 && (
-                    <ul className={styles.suggestionList}>
-                      {suggestions.map((book, i) => (
-                        <li key={i} onMouseDown={() => selectSuggestion(book)} className={styles.suggestionItem}>
-                          <span className={styles.suggestTitle}>{book.title}</span>
-                          <span className={styles.suggestAuthor}>{book.author}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+                <input 
+                  type="text" 
+                  placeholder="例：走れメロス" 
+                  value={bookTitle} 
+                  onChange={(e) => setBookTitle(e.target.value)} 
+                  required 
+                />
               </div>
 
               <div className={styles.inputGroup}>
                 <label>作者名</label>
-                <div className={styles.suggestWrapper}>
-                  <input 
-                    type="text" 
-                    placeholder="例：太宰治" 
-                    value={author} 
-                    onChange={(e) => {
-                      setAuthor(e.target.value);
-                      searchBooks(e.target.value);
-                    }} 
-                    required 
-                  />
-                  {/* タイトル欄で候補が出ていない時だけこちらでも出す */}
-                  {suggestions.length > 0 && !bookTitle && (
-                    <ul className={styles.suggestionList}>
-                      {suggestions.map((book, i) => (
-                        <li key={i} onMouseDown={() => selectSuggestion(book)} className={styles.suggestionItem}>
-                          <span className={styles.suggestTitle}>{book.title}</span>
-                          <span className={styles.suggestAuthor}>{book.author}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+                <input 
+                  type="text" 
+                  placeholder="例：太宰治" 
+                  value={author} 
+                  onChange={(e) => setAuthor(e.target.value)} 
+                  required 
+                />
               </div>
 
               <div className={styles.inputGroup}>
-                <label>本のURL (Amazon等)</label>
+                <label>本のURL</label>
                 <input 
                   type="url" 
-                  placeholder="候補を選択すると自動入力されます" 
+                  placeholder="参考リンク (Amazonなど)" 
                   value={url} 
                   onChange={(e) => setUrl(e.target.value)} 
                   required 
@@ -185,7 +106,11 @@ export default function Post() {
 
               <div className={styles.inputGroup}>
                 <label>感想 (任意)</label>
-                <textarea placeholder="この一文について..." value={impression} onChange={(e) => setImpression(e.target.value)} />
+                <textarea 
+                  placeholder="本の感想をここに記入" 
+                  value={impression} 
+                  onChange={(e) => setImpression(e.target.value)} 
+                />
               </div>
 
               <button type="submit" className={styles.submitButton}>栞を贈る</button>

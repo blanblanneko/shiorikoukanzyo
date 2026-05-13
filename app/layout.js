@@ -1,3 +1,5 @@
+import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata = {
@@ -25,6 +27,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ja">
+      <head>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-WZN33NRHKZ" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-WZN33NRHKZ');
+          `}
+        </Script>
+      </head>
       <body>
         {children}
       </body>

@@ -17,6 +17,9 @@ export const metadata = {
     title: "栞の交換所",
     description: "あなたの好きな一文を、誰かの好きな一文と交換する場所。",
   },
+  verification: {
+    google: "XD_wmJtJlr0DaXS-Lq3-bh9ARFL5vSYBVUeoN7O2u_s",
+  },
 };
 
 export default function RootLayout({ children }) {

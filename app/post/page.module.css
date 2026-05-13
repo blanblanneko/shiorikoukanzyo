@@ -178,6 +178,23 @@
   color: var(--text-color);
 }
 
+.suggestionList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white; /* 確実に不透明に */
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* 影を強くして目立たせる */
+  z-index: 9999; /* 他のすべての要素より上に表示 */
+  list-style: none;
+  padding: 0;
+  margin: 2px 0 0 0;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid var(--accent-color);
+}
+
 .flutteringShiori {
   width: 60px;
   height: 150px;

@@ -108,20 +108,16 @@ export default function Post() {
               <div className={styles.inputGroup}>
                 <label>本のタイトル</label>
                 <div className={styles.suggestWrapper}>
-                  <div className={styles.inputWithButton}>
-                    <input 
-                      type="text" 
-                      placeholder="例：走れメロス" 
-                      value={bookTitle} 
-                      onChange={(e) => {
-                        setBookTitle(e.target.value);
-                        searchBooks(e.target.value);
-                      }} 
-                      required 
-                    />
-                    <button type="button" className={styles.searchIconBtn} onClick={() => searchBooks(bookTitle)}>🔍</button>
-                  </div>
-                  {isSearching && <div className={styles.searchingStatus}>検索中...</div>}
+                  <input 
+                    type="text" 
+                    placeholder="例：走れメロス" 
+                    value={bookTitle} 
+                    onChange={(e) => {
+                      setBookTitle(e.target.value);
+                      searchBooks(e.target.value);
+                    }} 
+                    required 
+                  />
                   {suggestions.length > 0 && (
                     <ul className={styles.suggestionList}>
                       {suggestions.map((book, i) => (
@@ -138,19 +134,17 @@ export default function Post() {
               <div className={styles.inputGroup}>
                 <label>作者名</label>
                 <div className={styles.suggestWrapper}>
-                  <div className={styles.inputWithButton}>
-                    <input 
-                      type="text" 
-                      placeholder="例：太宰治" 
-                      value={author} 
-                      onChange={(e) => {
-                        setAuthor(e.target.value);
-                        searchBooks(e.target.value);
-                      }} 
-                      required 
-                    />
-                    <button type="button" className={styles.searchIconBtn} onClick={() => searchBooks(author)}>🔍</button>
-                  </div>
+                  <input 
+                    type="text" 
+                    placeholder="例：太宰治" 
+                    value={author} 
+                    onChange={(e) => {
+                      setAuthor(e.target.value);
+                      searchBooks(e.target.value);
+                    }} 
+                    required 
+                  />
+                  {/* タイトル欄で候補が出ていない時だけこちらでも出す */}
                   {suggestions.length > 0 && !bookTitle && (
                     <ul className={styles.suggestionList}>
                       {suggestions.map((book, i) => (

@@ -13,6 +13,44 @@ export default function Post() {
   
   const [status, setStatus] = useState('idle'); // idle, sending, result
   const [receivedBook, setReceivedBook] = useState(null);
+  
+  // 候補表示用のステート
+  const [suggestions, setSuggestions] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // 本を検索する関数
+  const searchBooks = async (query) => {
+    if (query.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    setIsSearching(true);
+    try {
+      const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=5`);
+      const data = await res.json();
+      if (data.items) {
+        const books = data.items.map(item => ({
+          title: item.volumeInfo.title,
+          author: item.volumeInfo.authors ? item.volumeInfo.authors[0] : '不明',
+          // Amazon検索URLを生成
+          amazonUrl: `https://www.amazon.co.jp/s?k=${encodeURIComponent(item.volumeInfo.title + ' ' + (item.volumeInfo.authors ? item.volumeInfo.authors[0] : ''))}`
+        }));
+        setSuggestions(books);
+      }
+    } catch (err) {
+      console.error('Search failed:', err);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // 候補を選択した時の処理
+  const selectSuggestion = (book) => {
+    setBookTitle(book.title);
+    setAuthor(book.author);
+    setUrl(book.amazonUrl);
+    setSuggestions([]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,17 +97,53 @@ export default function Post() {
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.inputGroup}>
                 <label>本のタイトル</label>
-                <input type="text" placeholder="例：走れメロス" value={bookTitle} onChange={(e) => setBookTitle(e.target.value)} required />
+                <div className={styles.suggestWrapper}>
+                  <input 
+                    type="text" 
+                    placeholder="例：走れメロス" 
+                    value={bookTitle} 
+                    onChange={(e) => {
+                      setBookTitle(e.target.value);
+                      searchBooks(e.target.value);
+                    }} 
+                    required 
+                  />
+                  {suggestions.length > 0 && (
+                    <ul className={styles.suggestionList}>
+                      {suggestions.map((book, i) => (
+                        <li key={i} onClick={() => selectSuggestion(book)} className={styles.suggestionItem}>
+                          <span className={styles.suggestTitle}>{book.title}</span>
+                          <span className={styles.suggestAuthor}>{book.author}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
 
               <div className={styles.inputGroup}>
                 <label>作者名</label>
-                <input type="text" placeholder="例：太宰治" value={author} onChange={(e) => setAuthor(e.target.value)} required />
+                <input 
+                  type="text" 
+                  placeholder="例：太宰治" 
+                  value={author} 
+                  onChange={(e) => {
+                    setAuthor(e.target.value);
+                    if (!bookTitle) searchBooks(e.target.value);
+                  }} 
+                  required 
+                />
               </div>
 
               <div className={styles.inputGroup}>
-                <label>本のURL</label>
-                <input type="url" placeholder="参考リンク" value={url} onChange={(e) => setUrl(e.target.value)} required />
+                <label>本のURL (Amazon等)</label>
+                <input 
+                  type="url" 
+                  placeholder="候補を選択すると自動入力されます" 
+                  value={url} 
+                  onChange={(e) => setUrl(e.target.value)} 
+                  required 
+                />
               </div>
 
               <div className={styles.inputGroup}>

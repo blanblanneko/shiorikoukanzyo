@@ -1,8 +1,22 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "栞の交換所 - 好きな一文を贈ると、誰かの好きな本に出会う。",
-  description: "あなたの好きな一文を贈ると、見知らぬ誰かの好きな本と出会う。静かな読書体験の交換所。",
+  title: "栞の交換所 | あなたの好きな一文を、誰かと交換する読書コミュニティ",
+  description: "心に残った本の一文を綴り、誰かの大切な一文を受け取る。匿名で楽しめる、本好きのための『栞』交換プラットフォームです。読書記録や名言の共有に。",
+  keywords: ["栞の交換所", "本", "読書", "名言", "一文", "読書記録", "コミュニティ", "本好き"],
+  openGraph: {
+    title: "栞の交換所",
+    description: "心に残った本の一文を、誰かと交換しませんか？",
+    url: "https://shiori-exchange.vercel.app",
+    siteName: "栞の交換所",
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "栞の交換所",
+    description: "あなたの好きな一文を、誰かの好きな一文と交換する場所。",
+  },
 };
 
 export default function RootLayout({ children }) {

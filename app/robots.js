@@ -3,7 +3,6 @@ export default function robots() {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/private/',
     },
     sitemap: 'https://shiori-exchange.vercel.app/sitemap.xml',
   };

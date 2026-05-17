@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic'; // キャッシュを無効化し、毎回ランダムに取得する
+
 // 初期データ（DBが空の時のためのバックアップ）
 const backupBookmarks = [
   {
@@ -25,24 +27,32 @@ export async function POST(request) {
     const { bookTitle, author, url, sentence, impression } = body;
 
     // 1. 投稿された栞を保存
-    const { error: insertError } = await supabase
+    const { data: insertedData, error: insertError } = await supabase
       .from('bookmarks')
-      .insert([{ book_title: bookTitle, author, url, sentence, impression }]);
+      .insert([{ book_title: bookTitle, author, url, sentence, impression }])
+      .select('id')
+      .single();
 
-    if (insertError) throw insertError;
+    if (insertError) {
+      console.error('【Supabase保存エラー】:', insertError.message, insertError.details, insertError.hint);
+      throw insertError;
+    }
 
-    // 2. 誰かの栞をランダムに取得
-    // PostgreSQLの 'random()' 関数を使用
+    // 2. 誰かの栞をランダムに取得（自分のIDは除外する）
     const { data: randomBookmarks, error: fetchError } = await supabase
       .from('bookmarks')
       .select('*')
-      .limit(10); // 一旦10件取得して、その中からJSでランダムに選ぶ（簡易的な抽選）
+      .neq('id', insertedData.id) // 自分のIDを除外！
+      .limit(10);
 
-    if (fetchError) throw fetchError;
+    if (fetchError) {
+      console.error('【Supabase取得エラー】:', fetchError.message);
+      throw fetchError;
+    }
 
     let result;
     if (randomBookmarks && randomBookmarks.length > 0) {
-      // 自分が今送ったもの以外を選びたいが、簡単のためランダムに抽出
+      // 取得した候補の中からランダムに1つ選ぶ
       const randomIndex = Math.floor(Math.random() * randomBookmarks.length);
       const dbResult = randomBookmarks[randomIndex];
       
@@ -54,15 +64,53 @@ export async function POST(request) {
         impression: dbResult.impression
       };
     } else {
-      // DBが空の場合はバックアップから
+      // 他にデータがない場合はバックアップから
       result = backupBookmarks[Math.floor(Math.random() * backupBookmarks.length)];
     }
 
     return NextResponse.json(result);
 
   } catch (error) {
-    console.error('Exchange error:', error);
-    // エラー時はバックアップを返してユーザー体験を損なわないようにする
+    console.error('Detailed Exchange Error:', error);
+    return NextResponse.json(backupBookmarks[0]);
+  }
+}
+
+export async function GET() {
+  try {
+    // 誰かの栞をランダムに取得
+    const { data: randomBookmarks, error: fetchError } = await supabase
+      .from('bookmarks')
+      .select('*')
+      .limit(50); // ランダム性を高めるため少し多めに取得
+
+    if (fetchError) {
+      console.error('【Supabase取得エラー(GET)】:', fetchError.message);
+      throw fetchError;
+    }
+
+    let result;
+    if (randomBookmarks && randomBookmarks.length > 0) {
+      // 取得した候補の中からランダムに1つ選ぶ
+      const randomIndex = Math.floor(Math.random() * randomBookmarks.length);
+      const dbResult = randomBookmarks[randomIndex];
+      
+      result = {
+        bookTitle: dbResult.book_title,
+        author: dbResult.author,
+        url: dbResult.url,
+        sentence: dbResult.sentence,
+        impression: dbResult.impression
+      };
+    } else {
+      // 他にデータがない場合はバックアップから
+      result = backupBookmarks[Math.floor(Math.random() * backupBookmarks.length)];
+    }
+
+    return NextResponse.json(result);
+
+  } catch (error) {
+    console.error('Detailed Exchange Error (GET):', error);
     return NextResponse.json(backupBookmarks[0]);
   }
 }

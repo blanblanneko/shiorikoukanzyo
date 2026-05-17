@@ -160,6 +160,33 @@
   box-shadow: 0 10px 20px rgba(125, 211, 252, 0.3);
 }
 
+.readonlySection {
+  margin-top: 2rem;
+  text-align: center;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  padding-top: 1.5rem;
+}
+
+.readonlyButton {
+  background: transparent;
+  color: #666;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.readonlyButton:hover {
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+
 /* 待機・結果 */
 .waitOverlay {
   position: fixed;

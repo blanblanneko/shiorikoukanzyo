@@ -1,16 +1,17 @@
 export default function sitemap() {
-  const lastModified = new Date().toISOString();
+  const baseUrl = 'https://shiori-exchange.vercel.app'; // あなたのサイトのURLに合わせてください
+
   return [
     {
-      url: 'https://shiori-exchange.vercel.app',
-      lastModified,
+      url: baseUrl,
+      lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: 'https://shiori-exchange.vercel.app/post',
-      lastModified,
-      changeFrequency: 'weekly',
+      url: `${baseUrl}/post`,
+      lastModified: new Date(),
+      changeFrequency: 'always',
       priority: 0.8,
     },
   ];

@@ -36,6 +36,37 @@ export default function Post() {
     setStatus('result');
   };
 
+  const handleReadonly = async () => {
+    setStatus('sending'); // 演出のためにsendingにする
+
+    try {
+      const fetchRandom = async () => {
+        const res = await fetch('/api/exchange', { cache: 'no-store' }); // GETメソッド（キャッシュ無効）
+        if (!res.ok) throw new Error('Network response was not ok');
+        return await res.json();
+      };
+
+      const [data] = await Promise.all([
+        fetchRandom(),
+        new Promise(resolve => setTimeout(resolve, 3500)) // 交換ではないので演出を少し短めに
+      ]);
+
+      setReceivedBook(data);
+      setStatus('result');
+    } catch (error) {
+      console.error('Fetch error:', error);
+      // エラー時はフェイルセーフとしてダミーデータをセット
+      setReceivedBook({
+        bookTitle: '走れメロス',
+        author: '太宰治',
+        url: 'https://www.amazon.co.jp/s?k=走れメロス+太宰治',
+        sentence: 'メロスは激怒した。必ず、かの邪智暴虐の王を除かなければならぬと決意した。',
+        impression: '友情と信実について考えさせられる、永遠の古典です。'
+      });
+      setStatus('result');
+    }
+  };
+
   if (status === 'idle') {
     return (
       <main className={styles.main}>
@@ -115,6 +146,12 @@ export default function Post() {
 
               <button type="submit" className={styles.submitButton}>栞を贈る</button>
             </form>
+            
+            <div className={styles.readonlySection}>
+              <button type="button" onClick={handleReadonly} className={styles.readonlyButton}>
+                栞を贈らずに誰かの一文を見る
+              </button>
+            </div>
           </div>
         </div>
       </main>

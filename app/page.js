@@ -22,6 +22,9 @@ export default function Home() {
             <Link href="/post" className={styles.primaryButton}>
               栞を贈り、本に出会う
             </Link>
+            <Link href="/read" className={styles.secondaryButton}>
+              栞を贈らずに誰かの一文を見る
+            </Link>
           </div>
         </div>
       </div>

@@ -53,6 +53,10 @@
 
 .actions {
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
 }
 
 .primaryButton {
@@ -73,6 +77,24 @@
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   background: var(--accent-color);
   color: white;
+}
+
+.secondaryButton {
+  background: transparent;
+  color: #888;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  align-self: flex-start; /* 左寄せ */
+  text-decoration: none;
+}
+
+.secondaryButton:hover {
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .footer {
